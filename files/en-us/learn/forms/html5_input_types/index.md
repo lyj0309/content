@@ -6,7 +6,7 @@ page-type: learn-module-chapter
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Forms/Basic_native_form_controls", "Learn/Forms/Other_form_controls", "Learn/Forms")}}
 
-In the [previous article](/en-US/docs/Learn/Forms/Basic_native_form_controls) we looked at the {{htmlelement("input")}} element, covering the original values of the `type` attribute available since the early days of HTML. Now we'll look at the functionality of newer form controls in detail, including some new input types, which were added in HTML5 to allow the collection of specific types of data.
+In the [previous article](/en-US/docs/Learn/Forms/Basic_native_form_controls) we looked at the {{htmlelement("input")}} element, covering the original values of the `type` attribute available since the early days of HTML. Now we'll look in detail at the functionality of inpty some form controls that were added later.
 
 <table>
   <tbody>
@@ -29,8 +29,7 @@ In the [previous article](/en-US/docs/Learn/Forms/Basic_native_form_controls) we
   </tbody>
 </table>
 
-> [!NOTE]
-> Most of the features discussed in this article have wide support across browsers. We'll note any exceptions. If you want more detail on browser support, you should consult our [HTML forms element reference](/en-US/docs/Web/HTML/Element#forms), and in particular our extensive [\<input> types](/en-US/docs/Web/HTML/Element/input) reference.
+The various values of
 
 Because HTML form control appearance may be quite different from a designer's specifications, web developers sometimes build their own custom form controls. We cover this in an advanced tutorial: [How to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls).
 
@@ -76,15 +75,19 @@ Note that `a@b` is a valid email address according to the default provided const
 
 Search fields are intended to be used to create search boxes on pages and apps. This type of field is set by using the value `search` for the [`type`](/en-US/docs/Web/HTML/Element/input#type) attribute:
 
+```html hidden
+<label for="search">Enter a search term:</label><br />
+```
+
 ```html
 <input type="search" id="search" name="search" />
 ```
 
+{{EmbedLiveSample('search field','100%','50')}}
+
 The main difference between a `text` field and a `search` field is how the browser styles its appearance. Often, `search` fields are rendered with rounded corners; they also sometimes display an "Ⓧ", which clears the field of any value when clicked. Additionally, on devices with dynamic keyboards, the keyboard's enter key may read "**search**", or display a magnifying glass icon.
 
-The below screenshots show a non-empty search field in Firefox 71, Safari 13, and Chrome 79 on macOS, and Edge 18 and Chrome 79 on Windows 10. Note that the clear icon only appears if the field has a value, and, apart from Safari, it is only displayed when the field is focused.
-
-![Screenshots of search fields on several platforms.](search_focus.png)
+A clear icon only appears if the field has a value, and, apart from Safari, it is only displayed when the field is focused.
 
 Another worth-noting feature is that the values of a `search` field can be automatically saved and re-used to offer auto-completion across multiple pages of the same website; this tends to happen automatically in most modern browsers.
 
@@ -92,15 +95,17 @@ Another worth-noting feature is that the values of a `search` field can be autom
 
 A special field for filling in phone numbers can be created using `tel` as the value of the [`type`](/en-US/docs/Web/HTML/Element/input#type) attribute:
 
+```html hidden
+<label for="tel">Enter a telephone number:</label><br />
+```
+
 ```html
 <input type="tel" id="tel" name="tel" />
 ```
 
+{{EmbedLiveSample('phone number field','100%','50')}}
+
 When accessed via a touch device with a dynamic keyboard, most devices will display a numeric keypad when `type="tel"` is encountered, meaning this type is useful whenever a numeric keypad is useful, and doesn't just have to be used for telephone numbers.
-
-The following Firefox for Android keyboard screenshot provides an example:
-
-![Firefox for Android email keyboard, with ampersand displayed by default.](fx-android-tel-type-keyboard.jpg)
 
 Due to the wide variety of phone number formats around the world, this type of field does not enforce any constraints on the value entered by a user (this means it may include letters, etc.).
 
@@ -110,15 +115,17 @@ As we mentioned earlier, the [`pattern`](/en-US/docs/Web/HTML/Attributes/pattern
 
 A special type of field for entering URLs can be created using the value `url` for the [`type`](/en-US/docs/Web/HTML/Element/input#type) attribute:
 
+```html hidden
+<label for="url">Enter a URL:</label><br />
+```
+
 ```html
 <input type="url" id="url" name="url" />
 ```
 
+{{EmbedLiveSample('URL field','100%','50')}}
+
 It adds special validation constraints to the field. The browser will report an error if no protocol (such as `http:`) is entered, or if the URL is otherwise malformed. On devices with dynamic keyboards, the default keyboard will often display some or all of the colon, period, and forward slash as default keys.
-
-See below for an example (taken on Firefox for Android):
-
-![Firefox for Android email keyboard, with ampersand displayed by default.](fx-android-url-type-keyboard.jpg)
 
 > [!NOTE]
 > Just because the URL is well-formed doesn't necessarily mean that it refers to a location that actually exists!
@@ -127,27 +134,45 @@ See below for an example (taken on Firefox for Android):
 
 Controls for entering numbers can be created with an {{HTMLElement("input")}} [`type`](/en-US/docs/Web/HTML/Element/input#type) of `number`. This control looks like a text field but allows only floating-point numbers, and usually provides buttons in the form of a spinner to increase and decrease the value of the control. On devices with dynamic keyboards, the numeric keyboard is generally displayed.
 
-The following screenshot (from Firefox for Android) provides an example:
+```html hidden live-sample___number
+<label for="number">Enter a number:</label><br />
+```
 
-![Firefox for Android email keyboard, with ampersand displayed by default.](fx-android-number-type-keyboard.jpg)
+```html live-sample___number
+<input type="number" id="number" name="number" />
+```
+
+{{EmbedLiveSample('number','100%','50')}}
 
 With the `number` input type, you can constrain the minimum and maximum values allowed by setting the [`min`](/en-US/docs/Web/HTML/Element/input#min) and [`max`](/en-US/docs/Web/HTML/Element/input#max) attributes.
 
 You can also use the `step` attribute to set the increment increase and decrease caused by pressing the spinner buttons. By default, the number input type only validates if the number is an integer. To allow float numbers, specify [`step="any"`](/en-US/docs/Web/HTML/Attributes/step). If omitted, the `step` value defaults to `1`, meaning only whole numbers are valid.
 
-Let's look at some examples. The first one below creates a number control whose value is restricted to any value between `1` and `10`, and whose increase and decrease buttons change its value by `2`.
+Let's look at some examples. The first one below creates a number control whose valid value is restricted to an odd value between `1` and `10`. The increase and decrease buttons change its value by `2`, starting with the `min` value.
 
-```html
+```html hidden live-sample___number2
+<label for="number">Enter an odd number between 1 and 10:</label><br />
+```
+
+```html live-sample___number2
 <input type="number" name="age" id="age" min="1" max="10" step="2" />
 ```
 
+{{EmbedLiveSample('number2','100%','50')}}
+
 The second one creates a number control whose value is restricted to any value between `0` and `1` inclusive, and whose increase and decrease buttons change its value by `0.01`.
 
-```html
+```html hidden live-sample___number3
+<label for="number">Enter a number between 0 and 1, inclusive:</label><br />
+```
+
+```html live-sample___number3
 <input type="number" name="change" id="pennies" min="0" max="1" step="0.01" />
 ```
 
-The `number` input type makes sense when the range of valid values is limited, for example a person's age or height. If the range is too large for incremental increases to make sense (such as USA ZIP codes, which range from `00001` to `99999`), the `tel` type might be a better option; it provides the numeric keypad while forgoing the number's spinner UI feature.
+{{EmbedLiveSample('number3','100%','50')}}
+
+The `number` input type makes sense when the range of valid values is limited, such as a person's age or height. If the range is too large for incremental increases to make sense (such as USA ZIP codes, which range from `00001` to `99999`), the `tel` type might be a better option; it provides the numeric keypad while forgoing the number's spinner UI feature.
 
 ## Slider controls
 
@@ -180,7 +205,7 @@ This example creates a slider whose value may range between `50000` and `500000`
 
 One problem with sliders is that they don't offer any kind of visual feedback as to what the current value is. This is why we've included an {{htmlelement("output")}} element to contain the current value. You could display an input value or the output of a calculation inside any element, but `<output>` is special — like `<label>` — and it can take a `for` attribute that allows you to associate it with the element or elements that the output value came from.
 
-To actually display the current value, and update it as it changed, you must use JavaScript, but this is relatively easy to do:
+To actually display the current value, and update it as it changes, you must use JavaScript, which can be accomplished with a few statements:
 
 ```js
 const price = document.querySelector("#price");
@@ -200,7 +225,7 @@ Here we store references to the `range` input and the `output` in two variables.
 
 ## Date and time pickers
 
-Gathering date and time values has traditionally been a nightmare for web developers. For a good user experience, it is important to provide a calendar selection UI, enabling users to select dates without necessitating context switching to a native calendar application or potentially entering them in differing formats that are hard to parse. The last minute of the previous millennium can be expressed in the following different ways, for example: 1999/12/31, 23:59 or 12/31/99T11:59PM.
+Gathering date and time values has traditionally been a nightmare for web developers. For a good user experience, it is important to provide a calendar selection UI, enabling users to select dates without necessitating context switching to a native calendar application or potentially entering them in differing formats that are hard to parse. The last minute of the previous millennium can be expressed in the following different ways: `1999/12/31`, `23:59`, or `12/31/99T11:59PM`.
 
 HTML date controls are available to handle this specific kind of data, providing calendar widgets and making the data uniform.
 
@@ -222,6 +247,10 @@ Let's look at the different available types in brief. Note that the usage of the
 
 [`<input type="month">`](/en-US/docs/Web/HTML/Element/input/month) creates a widget to display and pick a month with a year.
 
+```html hidden
+<label for="month">Enter the month:</label><br />
+```
+
 ```html
 <input type="month" name="month" id="month" />
 ```
@@ -229,6 +258,10 @@ Let's look at the different available types in brief. Note that the usage of the
 ### `time`
 
 [`<input type="time">`](/en-US/docs/Web/HTML/Element/input/time) creates a widget to display and pick a time value. While time may _display_ in 12-hour format, the _value returned_ is in 24-hour format.
+
+```html hidden
+<label for="time">Enter a time:</label><br />
+```
 
 ```html
 <input type="time" name="time" id="time" />
@@ -239,6 +272,10 @@ Let's look at the different available types in brief. Note that the usage of the
 [`<input type="week">`](/en-US/docs/Web/HTML/Element/input/week) creates a widget to display and pick a week number and its year.
 
 Weeks start on Monday and run to Sunday. Additionally, the first week 1 of each year contains the first Thursday of that year — which may not include the first day of the year, or may include the last few days of the previous year.
+
+```html hidden
+<label for="week">Enter the week:</label><br />
+```
 
 ```html
 <input type="week" name="week" id="week" />
@@ -265,6 +302,10 @@ Colors are always a bit difficult to handle. There are many ways to express them
 
 A `color` control can be created using the {{HTMLElement("input")}} element with its [`type`](/en-US/docs/Web/HTML/Element/input#type) attribute set to the value `color`:
 
+```html hidden
+<label for="color">Pick a color:</label><br />
+```
+
 ```html
 <input type="color" name="color" id="color" />
 ```
@@ -283,7 +324,7 @@ You've reached the end of this article, but can you remember the most important 
 
 ## Summary
 
-That brings us to the end of our tour of the HTML5 form input types. There are a few other control types that cannot be easily grouped together due to their very specific behaviors, but which are still essential to know about. We cover those in the next article.
+That brings us to the end of our tour of the HTML5 form input types. There are a few other control types that cannot be easily grouped due to their very specific behaviors but are still essential to know. We cover those in the next article.
 
 {{PreviousMenuNext("Learn/Forms/Basic_native_form_controls", "Learn/Forms/Other_form_controls", "Learn/Forms")}}
 
